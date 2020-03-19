@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>แผนที่</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mitr&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="data.css">
+
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body" align="center">
+                    <div>
+                        <h5 class="modal-title">เธอเป็นอย่างไรบ้าง</h5>
+                    </div>
+                    &nbsp;
+                    <div><a data-dismiss="modal" onclick="getHowdy(0.1)"> <img src="./img/level1.png"
+                                style="width: 50px;"><br> <span style="font-size: 12px;">สบายดี</span>
+                        </a>
+                    </div>
+                    &nbsp;
+                    <div><a data-dismiss="modal" onclick="getHowdy(0.4)"> <img src="./img/level2.png"
+                                style="width: 50px;"> <br>
+                            <span style="font-size: 12px;">ไม่แน่ใจ (มีอาการแต่ไม่เคยใกล้ชิดกับผู้ป่วย)</span> </a>
+                    </div>
+                    &nbsp;
+                    <div><a data-dismiss="modal" onclick="getHowdy(0.6)"> <img src="./img/level3.png"
+                                style="width: 50px;">
+                            <br>
+                            <span style="font-size: 12px;">คิดว่าเสี่ยง (ใกล้ชิดกับผู้ป่วย)</span></a>
+                    </div>
+                    &nbsp;
+                    <div><a data-dismiss="modal" onclick="getHowdy(1.0)"> <img src="./img/level4.png"
+                                style="width: 50px;">
+                            <br>
+                            <span style="font-size: 12px;">ป่วยแล้วนะ (ยืนยันแล้ว)</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+<script src="leaflet-heat.js"></script>
+<script src="hospital.js"></script>
+<script src="data.js"></script>
+
+</html>
