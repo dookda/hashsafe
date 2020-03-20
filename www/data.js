@@ -1,8 +1,13 @@
 
 $(document).ready(function () {
     loadMap();
-    getHosp();
-    getHeat()
+    // getHosp();
+    getHeat();
+    getHeatLv1();
+    getHeatLv2();
+    getHeatLv3();
+    getHeatLv4();
+    getHeateMe();
 });
 
 var map = L.map('map', {
@@ -12,12 +17,13 @@ var map = L.map('map', {
 var urlParams = new URLSearchParams(window.location.search);
 var marker, gps, dataurl, tam, amp, pro, x, y;
 
-// var url = 'https://rti2dss.com:3200';
-var url = 'http://localhost:3200';
+var url = 'https://rti2dss.com:3200';
+// var url = 'http://localhost:3200';
 
 $('#modal').modal('show');
 
-var healthy = 0.2;
+var healthy = 0.1;
+
 function getHowdy(a) {
     healthy = a;
 }
@@ -47,8 +53,8 @@ function loadMap() {
         transparent: true
     });
     var baseMap = {
+        "StamenBasemap": Stamen.addTo(map),
         "OpenStreetMap": osm,
-        "Stamen": Stamen.addTo(map),
         "GoogleMap": grod,
         "GoogleHybrid": ghyb
     }
@@ -118,37 +124,113 @@ function getHosp() {
 }
 
 
-var pntArr = [];
+var hr_all = 2;
+var hr_me = 120;
+
+var pntAll = [];
 function getHeat() {
-    $.get(url + '/anticov-api/getweloc/1').done((res) => {
+    $.get(url + '/anticov-api/getweloc/' + hr_all).done((res) => {
         var pnt = res.data
         pnt.forEach(e => {
-            pntArr.push([e.lat, e.lng, 0.5])
+            pntAll.push([e.lat, e.lng, 0.5])
         });
         // console.log(pntArr);
-        var heatLyr = L.heatLayer(pntArr, {
+        let heatLyr = L.heatLayer(pntAll, {
             radius: 20,
-            gradient: { 0.4: 'lightskyblue', 0.5: 'lemonchiffon', 1: 'lightcoral' },
+            gradient: { 0.4: 'LightCoral', 0.5: 'Crimson', 1: 'Red' },
             blur: 30
         });
-        layerControl.addOverlay(heatLyr.addTo(map), 'Heatmap ของทุกคน');
+        layerControl.addOverlay(heatLyr, 'ความหนาแน่นของผู้ใช้ทั้งหมด');
     })
 }
 
-var pntArrAll = [];
-function getHeat() {
-    $.get(url + '/anticov-api/getmyloc/1').done((res) => {
+
+var pntLv1 = [];
+function getHeatLv1() {
+    $.get(url + '/anticov-api/getweloc/' + hr_all + '/0.1').done((res) => {
         var pnt = res.data
         pnt.forEach(e => {
-            pntArr.push([e.lat, e.lng, 0.5])
+            pntLv1.push([e.lat, e.lng, 0.5])
         });
         // console.log(pntArr);
-        var heatLyr = L.heatLayer(pntArr, {
+        let heatLyr = L.heatLayer(pntLv1, {
+            radius: 20,
+            gradient: { 0.4: 'PaleGreen', 0.5: 'MediumSeaGreen', 1: 'ForestGreen' },
+            blur: 30
+        });
+        layerControl.addOverlay(heatLyr, 'ความหนาแน่นผู้ใช้ที่สบายดี');
+    })
+}
+
+var pntLv2 = [];
+function getHeatLv2() {
+    $.get(url + '/anticov-api/getweloc/' + hr_all + '/0.4').done((res) => {
+        var pnt = res.data
+        pnt.forEach(e => {
+            pntLv2.push([e.lat, e.lng, 0.5])
+        });
+        // console.log(pntArr);
+        var heatLyr = L.heatLayer(pntLv2, {
+            radius: 20,
+            gradient: { 0.4: 'Plum', 0.5: 'Orchid', 1: 'DarkOrchid' },
+            blur: 30
+        });
+        layerControl.addOverlay(heatLyr, 'ความหนาแน่นผู้ใช้ที่ไม่แน่ใจว่าเสี่ยง');
+    })
+}
+
+var pntLv3 = [];
+function getHeatLv3() {
+    $.get(url + '/anticov-api/getweloc/' + hr_all + '/0.6').done((res) => {
+        var pnt = res.data
+        pnt.forEach(e => {
+            pntLv3.push([e.lat, e.lng, 0.5])
+        });
+        // console.log(pntArr);
+        var heatLyr = L.heatLayer(pntLv3, {
+            radius: 20,
+            gradient: { 0.4: 'PeachPuff', 0.5: 'Coral', 1: 'OrangeRed' },
+            blur: 30
+        });
+        layerControl.addOverlay(heatLyr, 'ความหนาแน่นผู้ใช้ที่คิดว่าเสี่ยง');
+    })
+}
+
+var pntLv4 = [];
+function getHeatLv4() {
+    $.get(url + '/anticov-api/getweloc/' + hr_all + '/1.0').done((res) => {
+        var pnt = res.data
+        pnt.forEach(e => {
+            pntLv4.push([e.lat, e.lng, 0.5])
+        });
+        // console.log(pntArr);
+        var heatLyr = L.heatLayer(pntLv4, {
+            radius: 20,
+            gradient: { 0.4: 'LightCoral', 0.5: 'Crimson', 1: 'Red' },
+            blur: 30
+        });
+        layerControl.addOverlay(heatLyr, 'ความหนาแน่นผู้ใช้ที่ป่วย');
+    })
+}
+
+var pntArrMe = [];
+function getHeateMe() {
+    const obj = {
+        userid: urlParams.get('userid'),
+        hr: hr_me
+    }
+    $.post(url + '/anticov-api/getmyloc/', obj).done((res) => {
+        var pnt = res.data
+        pnt.forEach(e => {
+            pntArrMe.push([e.lat, e.lng, 0.5])
+        });
+        // console.log(pntArr);
+        var heatLyr = L.heatLayer(pntArrMe, {
             radius: 20,
             gradient: { 0.4: 'lightskyblue', 0.5: 'lemonchiffon', 1: 'lightcoral' },
             blur: 30
         });
-        layerControl.addOverlay(heatLyr.addTo(map), 'Heatmap ของทุกคน');
+        layerControl.addOverlay(heatLyr.addTo(map), 'ความหนาแน่นของตนเอง');
     })
 }
 

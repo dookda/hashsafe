@@ -97,26 +97,22 @@ function getAccount() {
     }
     $.post(url + '/anticov-api/getaccount', obj).done((res) => {
         console.log(res.data)
+        $("#n").text('Save');
         if (res.data.length > 0) {
             isNew = false;
-            $('#name').val(res.data[0].first_name);
-            $('#surname').val(res.data[0].last_name);
-            $('#stuid').val(res.data[0].stuid);
+            $('#ocupation').val(res.data[0].ocupation);
             $('#birthdate').val(res.data[0].birthdate);
             $('#sex').val(res.data[0].sex);
+            $("#n").text('Update');
         }
     })
 }
-
-
 
 $('#fieldForm').submit(function (e) {
     e.preventDefault();
     const obj = {
         userid: urlParams.get('userid'),
-        first_name: $('#name').val(),
-        last_name: $('#surname').val(),
-        stuid: $('#stuid').val(),
+        ocupation: $('#ocupation').val(),
         birthdate: $('#birthdate').val(),
         sex: $('#sex').val(),
         place: place,
@@ -126,15 +122,15 @@ $('#fieldForm').submit(function (e) {
     if (isNew) {
         console.log('insert', obj)
         $.post(url + '/anticov-api/insert', obj).done((res) => {
-            console.log(res)
-            // $('form :input').val('');
+            // console.log(res)
+            $('#modal').modal('show');
             getAccount()
         })
     } else {
         console.log('update', obj)
         $.post(url + '/anticov-api/update', obj).done((res) => {
-            console.log(res)
-            // $('form :input').val('');
+            // console.log(res)
+            $('#modal').modal('show');
             getAccount();
         })
     }

@@ -24,13 +24,22 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-// var server = https.createServer( https_options , app );
-var port = process.env.PORT || 3200;
-app.listen(port, function () {
-    console.log('listening on port ' + port);
-});
 app.use(express.static(__dirname + '/www'));
 const api = require('./service/app');
+
 app.use(api);
+
+// for run localhost
+var port = process.env.PORT || 3200;
+app.listen(port, function () {
+    console.log('http://localhost:' + port);
+});
+
+// var server = https.createServer(https_options, app);
+// var port = process.env.PORT || 3200;
+// server.listen(port, function () {
+//     console.log('listening on port ' + server.address().port);
+// });
+
 
 

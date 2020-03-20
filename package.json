@@ -2,7 +2,7 @@
   "name": "acci-node",
   "version": "1.0.0",
   "description": "service for acci-bot",
-  "main": "server.js",
+  "main": "safe_server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
