@@ -44,13 +44,13 @@ app.get('/acc-api/getaddress/:lat/:lon', (req, res) => {
 });
 
 app.post('/anticov-api/insert', (req, res) => {
-    const { userid, ocupation, birthdate, sex, place, geom } = req.body;
+    const { userid, ocupation, birthdate, sex, healthy, place, geom } = req.body;
     const rand1 = Math.random().toString(36).substr(2);
     const rand2 = Date.now();
     const pkid = rand1 + rand2;
-    const sql = 'INSERT INTO geomember (userid,ocupation,birthdate,sex,place,pkid, geom) ' +
-        'VALUES ($1,$2,$3,$4,$5,$6,ST_SetSRID(st_geomfromgeojson($7), 4326))';
-    const val = [userid, ocupation, birthdate, sex, place, pkid, geom];
+    const sql = 'INSERT INTO geomember (userid,ocupation,birthdate,sex,healthy,place,pkid, geom) ' +
+        'VALUES ($1,$2,$3,$4,$5,$6,$7,ST_SetSRID(st_geomfromgeojson($8), 4326))';
+    const val = [userid, ocupation, birthdate, sex, healthy, place, pkid, geom];
     console.log(val)
     cv.query(sql, val)
         .then(() => {
@@ -61,10 +61,10 @@ app.post('/anticov-api/insert', (req, res) => {
 });
 
 app.post('/anticov-api/update', (req, res) => {
-    const { userid, ocupation, birthdate, sex, place, geom } = req.body;
-    const sql = 'UPDATE geomember SET ocupation=$2,birthdate=$3,sex=$4,place=$5,geom=ST_SetSRID(st_geomfromgeojson($6), 4326) ' +
+    const { userid, ocupation, birthdate, sex, healthy, place, geom } = req.body;
+    const sql = 'UPDATE geomember SET ocupation=$2,birthdate=$3,sex=$4,healthy=$5,place=$6,geom=ST_SetSRID(st_geomfromgeojson($7), 4326) ' +
         'WHERE userid=$1';
-    const val = [userid, ocupation, birthdate, sex, place, geom];
+    const val = [userid, ocupation, birthdate, sex, healthy, place, geom];
     // console.log(val)
     cv.query(sql, val)
         .then(() => {
@@ -132,12 +132,23 @@ app.post('/anticov-api/getmyloc', (req, res) => {
 
 app.post('/anticov-api/getaccount', (req, res) => {
     const { userid } = req.body;
-    const sql = `SELECT ocupation, to_char( birthdate, 'YYYY-mm-DD') as birthdate, sex FROM geomember WHERE userid = $1`;
+    const sql = `SELECT ocupation, to_char( birthdate, 'YYYY-mm-DD') as birthdate, sex, healthy  FROM geomember WHERE userid = $1`;
     const val = [userid];
     cv.query(sql, val).then((data) => {
         res.status(200).json({
             status: 'success',
             message: 'get account',
+            data: data.rows
+        })
+    })
+})
+
+app.get('/anticov-api/memberloc', (req, res) => {
+    const sql = `SELECT pkid, st_y(geom) as lat, st_x(geom) as lng FROM geomember`;
+    cv.query(sql).then((data) => {
+        res.status(200).json({
+            status: 'success',
+            message: 'get member',
             data: data.rows
         })
     })

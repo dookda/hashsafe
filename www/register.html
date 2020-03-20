@@ -43,16 +43,16 @@
       <div class="form-group">
         <label for="vehicle">อาชีพ</label>
         <select class="form-control" id="ocupation" required>
-          <option value="ชาย">ภูมิศาสตร์ มช.</option>
-          <option value="หญิง">นักเรียน-นักศึกษา</option>
-          <option value="ไม่ระบุ">บุคลทั่วไป</option>
+          <option value="ภูมิศาสตร์ มช." selected>ภูมิศาสตร์ มช.</option>
+          <option value="นักเรียน-นักศึกษา">นักเรียน-นักศึกษา</option>
+          <option value="บุคลทั่วไป">บุคลทั่วไป</option>
         </select>
       </div>
 
       <div class="form-group">
         <label for="vehicle">เพศ</label>
         <select class="form-control" id="sex" required>
-          <option value="ชาย">ชาย</option>
+          <option value="ชาย" selected>ชาย</option>
           <option value="หญิง">หญิง</option>
           <option value="ไม่ระบุ">ไม่ระบุ</option>
         </select>
@@ -60,7 +60,17 @@
 
       <div class="form-group">
         <label for="address">วัน-เดือน-ปี เกิด:</label>
-        <input type="date" class="form-control" id="birthdate">
+        <input type="date" class="form-control" id="birthdate" required>
+      </div>
+
+      <div class="form-group">
+        <label for="vehicle">บอกระดับความเสี่ยงปัจจุบัน</label>
+        <select class="form-control" id="healthy" required>
+          <option value="0.1" selected>สบายดี (ปกติ)</option>
+          <option value="0.4">ไม่แน่ใจ (มีอาการแต่ไม่เคยใกล้ชิดกับผู้ป่วยหรือเข้าพื้นที่เสี่ยง)</option>
+          <option value="0.6">คิดว่าเสี่ยง (ใกล้ชิดกับผู้ป่วยหรือเข้าพืนที่เสี่ยง)</option>
+          <option value="1.0">ป่วยแล้วนะ (หมอยืนยันแล้ว)</option>
+        </select>
       </div>
 
 

@@ -103,6 +103,8 @@ function getAccount() {
             $('#ocupation').val(res.data[0].ocupation);
             $('#birthdate').val(res.data[0].birthdate);
             $('#sex').val(res.data[0].sex);
+            $('#healthy').val(res.data[0].healthy);
+
             $("#n").text('Update');
         }
     })
@@ -115,6 +117,7 @@ $('#fieldForm').submit(function (e) {
         ocupation: $('#ocupation').val(),
         birthdate: $('#birthdate').val(),
         sex: $('#sex').val(),
+        healthy: $('#healthy').val(),
         place: place,
         geom: JSON.stringify(gps.toGeoJSON().geometry)
     }

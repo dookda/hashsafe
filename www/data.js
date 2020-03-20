@@ -20,7 +20,7 @@ var marker, gps, dataurl, tam, amp, pro, x, y;
 var url = 'https://rti2dss.com:3200';
 // var url = 'http://localhost:3200';
 
-$('#modal').modal('show');
+// $('#modal').modal('show');
 
 var healthy = 0.1;
 
@@ -137,8 +137,8 @@ function getHeat() {
         // console.log(pntArr);
         let heatLyr = L.heatLayer(pntAll, {
             radius: 20,
-            gradient: { 0.4: 'LightCoral', 0.5: 'Crimson', 1: 'Red' },
-            blur: 30
+            gradient: { 0.4: 'OliveDrab', 0.5: 'Orange', 1: 'Coral' },
+            blur: 40
         });
         layerControl.addOverlay(heatLyr, 'ความหนาแน่นของผู้ใช้ทั้งหมด');
     })
@@ -156,7 +156,7 @@ function getHeatLv1() {
         let heatLyr = L.heatLayer(pntLv1, {
             radius: 20,
             gradient: { 0.4: 'PaleGreen', 0.5: 'MediumSeaGreen', 1: 'ForestGreen' },
-            blur: 30
+            blur: 50
         });
         layerControl.addOverlay(heatLyr, 'ความหนาแน่นผู้ใช้ที่สบายดี');
     })
@@ -173,7 +173,7 @@ function getHeatLv2() {
         var heatLyr = L.heatLayer(pntLv2, {
             radius: 20,
             gradient: { 0.4: 'Plum', 0.5: 'Orchid', 1: 'DarkOrchid' },
-            blur: 30
+            blur: 50
         });
         layerControl.addOverlay(heatLyr, 'ความหนาแน่นผู้ใช้ที่ไม่แน่ใจว่าเสี่ยง');
     })
@@ -190,7 +190,7 @@ function getHeatLv3() {
         var heatLyr = L.heatLayer(pntLv3, {
             radius: 20,
             gradient: { 0.4: 'PeachPuff', 0.5: 'Coral', 1: 'OrangeRed' },
-            blur: 30
+            blur: 50
         });
         layerControl.addOverlay(heatLyr, 'ความหนาแน่นผู้ใช้ที่คิดว่าเสี่ยง');
     })
@@ -207,7 +207,7 @@ function getHeatLv4() {
         var heatLyr = L.heatLayer(pntLv4, {
             radius: 20,
             gradient: { 0.4: 'LightCoral', 0.5: 'Crimson', 1: 'Red' },
-            blur: 30
+            blur: 50
         });
         layerControl.addOverlay(heatLyr, 'ความหนาแน่นผู้ใช้ที่ป่วย');
     })
@@ -228,7 +228,7 @@ function getHeateMe() {
         var heatLyr = L.heatLayer(pntArrMe, {
             radius: 20,
             gradient: { 0.4: 'lightskyblue', 0.5: 'lemonchiffon', 1: 'lightcoral' },
-            blur: 30
+            blur: 50
         });
         layerControl.addOverlay(heatLyr.addTo(map), 'ความหนาแน่นของตนเอง');
     })
