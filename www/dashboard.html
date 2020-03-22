@@ -22,17 +22,34 @@
     <div class="container-fluid">
         <div class="row mt-3">
             <div class="col-lg-6">
-                จำนวนสมาชิก <span id="usercount"></span> คน
-                <div class="map" id="membermap"></div>
+                <div class="card bg-light text-dark">
+                    <div class="card-body">
+                        จำนวนสมาชิก <span id="usercount"></span> คน</div>
+                </div>
+                <div class="map mt-1" id="membermap"></div>
             </div>
             <div class="col-lg-6">
-                density 20 ชั่วโมง จากผู้ใช้ทั้งหมด
-                <div class="map" id="densitymap"></div>
+                <div class="card bg-light text-dark">
+                    <div class="card-body">density 20 ชั่วโมง จากผู้ใช้ทั้งหมด</div>
+                </div>
+
+                <div class="map mt-1" id="densitymap"></div>
             </div>
         </div>
-        <!-- <div class="p-0 mt-3">
-            
-        </div> -->
+        <div class="row mt-3">
+            <div class="col-lg-6">
+                <div class="card bg-light text-dark">
+                    <div class="card-body">
+                        จำนวนสมาชิก <span id="usercount"></span> คน</div>
+                </div>
+                <div class="map mt-1" id="infectedMap"></div>
+            </div>
+            <div class="col-lg-6">
+                <div id="chartdiv"></div>
+            </div>
+
+        </div>
+        <p></p>
     </div>
 </body>
 <!-- jQuery library -->
@@ -43,7 +60,17 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+<!-- chart -->
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+
 <script src="leaflet-heat.js"></script>
+<script src="infected_prov.js"></script>
+
+
 <script src="dashboard.js"></script>
+
+
 
 </html>

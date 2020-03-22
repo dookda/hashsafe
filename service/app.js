@@ -1,30 +1,9 @@
 const express = require('express');
+const request = require('request');
 const app = express.Router();
 const Pool = require('pg').Pool
 
-const th = new Pool({
-    user: 'postgres',
-    host: '119.59.125.134',
-    database: 'th',
-    password: 'Pgis@rti2dss@2020',
-    port: 5432,
-});
 
-const ac = new Pool({
-    user: 'postgres',
-    host: '119.59.125.134',
-    database: 'accident',
-    password: 'Pgis@rti2dss@2020',
-    port: 5432,
-});
-
-const cv = new Pool({
-    user: 'postgres',
-    host: '119.59.125.134',
-    database: 'anticov',
-    password: 'Pgis@rti2dss@2020',
-    port: 5432,
-});
 
 app.get('/acc-api/getaddress/:lat/:lon', (req, res) => {
     const lat = req.params.lat;
@@ -153,5 +132,45 @@ app.get('/anticov-api/memberloc', (req, res) => {
         })
     })
 })
+
+app.get('/anticov-api/notify', (req, res, next) => {
+    var token = 'RAr7M3ZCUj3D8IArwuo6Czfd7KiEHZruGmU7QpoXIsG';
+    var message = 'test line notify';
+
+    console.log('dasadad')
+
+    request({
+        method: 'POST',
+        uri: 'https://notify-api.line.me/api/notify',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        auth: {
+            'bearer': token
+        },
+        form: {
+            message: message
+        }
+    }, (err, httpResponse, body) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json({
+                httpResponse: httpResponse,
+                body: body
+            });
+        }
+    });
+});
+
+
+app.post('/anticov-api/notify2', (req, res) => {
+    let reply_token = req.body.events[0].replyToken
+    let msg = req.body.events[0].message.text
+    console.log(reply_token)
+    res.sendStatus(200)
+})
+
+
 
 module.exports = app;
