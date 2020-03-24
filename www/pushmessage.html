@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>upload</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
+    <link rel="stylesheet" href="pushmessage.css">
+</head>
+
+<body>
+    <div class="container mt">
+        <div class="row">
+            <div class="col-sm-6">
+                <div id="map"></div>
+            </div>
+            <div class="col-sm-6">
+                <div class="dcard">
+                    <h1 style="font-weight: bold">upload covid-19</h1>
+                    <h4>อัพโหลดข้อมูล js</h4>
+                    ตัวอย่างไฟล์ที่ใช้ในการอัพโหลด <a href="infected_prov.js">infected_prov.js</a>
+                    <hr>
+                    <!-- <form id="fieldForm" method="post" action="/anticov-api/upload" enctype="multipart/form-data"> -->
+                    <form action="uploadresize.php" method="post" enctype="multipart/form-data" name="frmMain">
+                        <div class="form-group">
+                            <input type="file" name="imagename" id="imagename">
+                        </div>
+                        <hr>
+                        <button type="submit" id="button" class="btn btn-success">ส่งข้อมูล</button>
+                        <button type="button" id="refresh" onclick="refreshPage()"
+                            class="btn btn-outline-info">refresh</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+<script src="./upload/infected_prov.js"></script>
+<script src="pushmessage.js"></script>
+
+</html>

@@ -1,9 +1,41 @@
 const express = require('express');
 const request = require('request');
 const app = express.Router();
-const Pool = require('pg').Pool
+const multer = require('multer');
+
+const con = require('./db');
+const th = con.th;
+const cv = con.cv;
+const cvm = con.cvm;
+
+app.post('/webhook', (req, res) => {
+    var text = req.body.events[0].message.text
+    var sender = req.body.events[0].source.userId
+    var replyToken = req.body.events[0].replyToken
+    console.log(text, sender, replyToken)
+    console.log(typeof sender, typeof text)
+    // console.log(req.body.events[0])
+
+})
 
 
+var storage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, './www/upload');
+    },
+    filename: function (req, file, callback) {
+        callback(null, 'infected_prov.js');
+    }
+});
+
+var upload = multer({ storage: storage });
+
+app.post('/anticov-api/upload', upload.single('imagename'), (req, res) => {
+    res.status(200).json({
+        status: 'success',
+        message: 'insert data'
+    });
+});
 
 app.get('/acc-api/getaddress/:lat/:lon', (req, res) => {
     const lat = req.params.lat;
@@ -44,7 +76,6 @@ app.post('/anticov-api/update', (req, res) => {
     const sql = 'UPDATE geomember SET ocupation=$2,birthdate=$3,sex=$4,healthy=$5,place=$6,geom=ST_SetSRID(st_geomfromgeojson($7), 4326) ' +
         'WHERE userid=$1';
     const val = [userid, ocupation, birthdate, sex, healthy, place, geom];
-    // console.log(val)
     cv.query(sql, val)
         .then(() => {
             res.status(200).json({
@@ -84,8 +115,15 @@ app.get('/anticov-api/getweloc/:hr', (req, res) => {
 app.get('/anticov-api/getweloc/:hr/:w', (req, res) => {
     const hr = req.params.hr;
     const w = req.params.w;
-    const sql = `SELECT gid, st_x(geom) as lng, st_y(geom) as lat FROM saveloc  
-    WHERE inputdate >= (now() - interval '${hr} hours') AND healthy = ${w}`;
+    let sql;
+    if (w == 0.1) {
+        sql = `SELECT gid, st_x(geom) as lng, st_y(geom) as lat FROM saveloc  
+        WHERE inputdate >= (now() - interval '${hr} hours') AND healthy = ${w}`;
+    } else {
+        sql = `SELECT gid, st_x(geom) as lng, st_y(geom) as lat FROM saveloc  
+        WHERE inputdate >= (now() - interval '${hr} hours') AND healthy > ${w}`;
+    }
+
     // const val = [hr];
     cv.query(sql).then((data) => {
         res.status(200).json({
@@ -136,9 +174,6 @@ app.get('/anticov-api/memberloc', (req, res) => {
 app.get('/anticov-api/notify', (req, res, next) => {
     var token = 'RAr7M3ZCUj3D8IArwuo6Czfd7KiEHZruGmU7QpoXIsG';
     var message = 'test line notify';
-
-    console.log('dasadad')
-
     request({
         method: 'POST',
         uri: 'https://notify-api.line.me/api/notify',
@@ -169,6 +204,17 @@ app.post('/anticov-api/notify2', (req, res) => {
     let msg = req.body.events[0].message.text
     console.log(reply_token)
     res.sendStatus(200)
+})
+
+app.get('/anticov-api/labcovid', (req, res) => {
+    const sql = `SELECT * FROM labcovid`;
+    cvm.query(sql).then((data) => {
+        res.status(200).json({
+            status: 'success',
+            message: 'get member',
+            data: data.rows
+        })
+    })
 })
 
 
