@@ -171,7 +171,7 @@ function loadInfectedMap() {
 
         var div = L.DomUtil.create('div', 'info legend'),
             grades = [0, 1, 5, 10, 20, 50, 100, 200],
-            labels = [],
+            labels = ['จำนวนผู้ป่วย : ราย'],
             from, to;
 
         for (var i = 0; i < grades.length; i++) {

@@ -21,7 +21,7 @@ app.post('/webhook', (req, res) => {
 
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, './www/upload');
+        callback(null, './../www/upload');
     },
     filename: function (req, file, callback) {
         callback(null, 'infected_prov.js');
@@ -116,13 +116,10 @@ app.get('/anticov-api/getweloc/:hr/:w', (req, res) => {
     const hr = req.params.hr;
     const w = req.params.w;
     let sql;
-    if (w == 0.1) {
-        sql = `SELECT gid, st_x(geom) as lng, st_y(geom) as lat FROM saveloc  
+
+    sql = `SELECT gid, st_x(geom) as lng, st_y(geom) as lat FROM saveloc  
         WHERE inputdate >= (now() - interval '${hr} hours') AND healthy = ${w}`;
-    } else {
-        sql = `SELECT gid, st_x(geom) as lng, st_y(geom) as lat FROM saveloc  
-        WHERE inputdate >= (now() - interval '${hr} hours') AND healthy > ${w}`;
-    }
+
 
     // const val = [hr];
     cv.query(sql).then((data) => {
@@ -217,6 +214,55 @@ app.get('/anticov-api/labcovid', (req, res) => {
     })
 })
 
+app.post('/anticov-api/savestore', (req, res) => {
+    const { userid, storeName, storeId, facebook, lineid, tel, maskVol, maskLowprice, maskHighprice, gelVol, gelLowprice, gelHighprice, geom } = req.body;
+    const sql = 'INSERT INTO drugstore (userid, storename, storeid, facebook, lineid, tel, maskvol, masklowprice, maskhighprice, gelvol, gellowprice, gelhighprice, date_update, geom)' +
+        'VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, now(), ST_SetSRID(st_geomfromgeojson($13), 4326))';
+    const val = [userid, storeName, storeId, facebook, lineid, tel, maskVol, maskLowprice, maskHighprice, gelVol, gelLowprice, gelHighprice, geom];
+    // console.log(val)
+    cvm.query(sql, val)
+        .then(() => {
+            res.status(200).json({
+                status: 'insert success',
+            });
+        })
+});
+
+app.post('/anticov-api/updatestore', (req, res) => {
+    const { userid, storeName, storeId, facebook, lineid, tel, maskVol, maskLowprice, maskHighprice, gelVol, gelLowprice, gelHighprice, geom } = req.body;
+    const sql = 'UPDATE drugstore SET storename=$2,storeid=$3,facebook=$4,lineid=$5,tel=$6,maskvol=$7,masklowprice=$8,maskhighprice=$9,gelvol=$10,gellowprice=$11,gelhighprice=$12,date_update=now() ' +
+        'WHERE userid=$1';
+    const val = [userid, storeName, storeId, facebook, lineid, tel, maskVol, maskLowprice, maskHighprice, gelVol, gelLowprice, gelHighprice];
+    cvm.query(sql, val)
+        .then(() => {
+            res.status(200).json({
+                status: 'insert success',
+            });
+        })
+});
+
+app.post('/anticov-api/getstore', (req, res) => {
+    const { userid } = req.body;
+    const sql = `SELECT *, ST_X(geom) as lng, ST_X(geom) as lat  FROM drugstore where userid = '${userid}'`;
+    cvm.query(sql).then((data) => {
+        res.status(200).json({
+            status: 'success',
+            message: 'get member',
+            data: data.rows
+        })
+    })
+})
+
+app.get('/anticov-api/getallstore', (req, res) => {
+    const sql = `SELECT *, ST_X(geom) as lng, ST_Y(geom) as lat  FROM drugstore`;
+    cvm.query(sql).then((data) => {
+        res.status(200).json({
+            status: 'success',
+            message: 'get member',
+            data: data.rows
+        })
+    })
+})
 
 
 module.exports = app;

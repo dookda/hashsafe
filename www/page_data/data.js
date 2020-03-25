@@ -1,14 +1,15 @@
 
 $(document).ready(async function () {
+    await liff.init({ liffId: "1653987548-lvv7BqpK" }, () => { }, err => console.error(err.code, error.message));
+    getUserid();
+
     loadMap();
-    // await loadInfectedMap();
-    await getLabcovid();
-    // await getHeat();
-    await getHeatLv1();
-    await getHeatLv2();
-    // await getHeatLv3();
-    // await getHeatLv4();
-    // await getHeateMe();
+    getLabcovid();
+    getHeatAll();
+    getHeatLv1();
+    getHeatLv2();
+    getHeatLv3();
+    getHeatLv4();
 });
 
 var map = L.map('map', {
@@ -22,10 +23,16 @@ var url = 'https://rti2dss.com:3200';
 // var url = 'http://localhost:3200';
 
 // $('#modal').modal('show');
+var userid;
+async function getUserid() {
+    const profile = await liff.getProfile();
+    userid = await profile.userId
+    getHeateMe();
+}
 
 var healthy = 0.1;
-
 function getHowdy(a) {
+    // console.log(a)
     healthy = a;
 }
 
@@ -68,7 +75,13 @@ var place;
 function onLocationFound(e) {
     // console.log(e)
     gps = L.marker(e.latlng);
-    setLocation(gps)
+
+    if (userid == null && userid == undefined) {
+        // setLocation(gps)
+        // alert('ไม่พบ')        
+    } else {
+        setLocation(gps)
+    }
 }
 
 function onLocationError(e) {
@@ -97,7 +110,7 @@ lc.start();
 
 function setLocation(gps) {
     const obj = {
-        userid: urlParams.get('userid'),
+        userid: userid,
         healthy: healthy,
         geom: JSON.stringify(gps.toGeoJSON().geometry)
     }
@@ -110,7 +123,7 @@ function setLocation(gps) {
 var hospitals;
 function getLabcovid() {
 
-    const icon = './img/shield.png';
+    const icon = '../img/shield.png';
     const iconMarker = L.icon({
         iconUrl: icon,
         iconSize: [32, 35],
@@ -145,7 +158,7 @@ var hr_all = 6;
 var hr_me = 120;
 
 var pntAll = [];
-function getHeat() {
+function getHeatAll() {
     $.get(url + '/anticov-api/getweloc/' + hr_all).done((res) => {
         var pnt = res.data
         pnt.forEach(e => {
@@ -160,7 +173,6 @@ function getHeat() {
         layerControl.addOverlay(heatLyr, 'ความหนาแน่นของผู้ใช้ทั้งหมด');
     })
 }
-
 
 var pntLv1 = [];
 function getHeatLv1() {
@@ -181,7 +193,7 @@ function getHeatLv1() {
 
 var pntLv2 = [];
 function getHeatLv2() {
-    $.get(url + '/anticov-api/getweloc/' + hr_all + '/0.6').done((res) => {
+    $.get(url + '/anticov-api/getweloc/' + hr_all + '/0.4').done((res) => {
         var pnt = res.data
         pnt.forEach(e => {
             pntLv2.push([e.lat, e.lng, 0.5])
@@ -192,7 +204,7 @@ function getHeatLv2() {
             gradient: { 0.4: 'Plum', 0.5: 'Orchid', 1: 'DarkOrchid' },
             blur: 50
         });
-        layerControl.addOverlay(heatLyr, 'กลุ่มผู้ใช้ที่ผู้ป่วย');
+        layerControl.addOverlay(heatLyr, 'กลุ่มผู้ใช้ที่ไม่แน่ใจ');
     })
 }
 
@@ -209,7 +221,7 @@ function getHeatLv3() {
             gradient: { 0.4: 'PeachPuff', 0.5: 'Coral', 1: 'OrangeRed' },
             blur: 50
         });
-        layerControl.addOverlay(heatLyr, 'ความหนาแน่นผู้ใช้ที่คิดว่าเสี่ยง');
+        layerControl.addOverlay(heatLyr, 'กลุ่มผู้ใช้ที่คิดว่าเสี่ยง');
     })
 }
 
@@ -226,14 +238,15 @@ function getHeatLv4() {
             gradient: { 0.4: 'LightCoral', 0.5: 'Crimson', 1: 'Red' },
             blur: 50
         });
-        layerControl.addOverlay(heatLyr, 'ความหนาแน่นผู้ใช้ที่ป่วย');
+        layerControl.addOverlay(heatLyr, 'กลุ่มผู้ใช้ที่ป่วย');
     })
 }
 
 var pntArrMe = [];
 function getHeateMe() {
+    // alert(userid)
     const obj = {
-        userid: urlParams.get('userid'),
+        userid: userid,
         hr: hr_me
     }
     $.post(url + '/anticov-api/getmyloc/', obj).done((res) => {
@@ -247,133 +260,7 @@ function getHeateMe() {
             gradient: { 0.4: 'lightskyblue', 0.5: 'lemonchiffon', 1: 'lightcoral' },
             blur: 50
         });
-        layerControl.addOverlay(heatLyr.addTo(map), 'ความหนาแน่นของตนเอง');
+        layerControl.addOverlay(heatLyr.addTo(map), 'สถานที่ที่เราไปบ่อย');
     })
 }
-
-// infected province map
-var info = L.control();
-var legend = L.control({ position: 'bottomright' });
-function loadInfectedMap() {
-
-    info.onAdd = function (infectedMap) {
-        this._div = L.DomUtil.create('div', 'info');
-        this.update();
-        return this._div;
-    };
-
-    info.update = function (props) {
-        // console.log(props)
-        this._div.innerHTML = '<h4>จำนวนผู้ติดเชื้อ COVID-19</h4>' + (props ?
-            '<b>' + props.pro_name + '</b><br />' + props.infected + ' ราย'
-            : '');
-    };
-
-    geojson = L.geoJson(infected, {
-        style: style,
-        onEachFeature: onEachFeature
-    });
-
-    layerControl.addOverlay(geojson, 'จำนวนผู้ติดเชื้อรายจังหวัด');
-
-    // map.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
-
-    legend.onAdd = function (infectedMap) {
-
-        var div = L.DomUtil.create('div', 'info legend'),
-            grades = [0, 1, 5, 10, 20, 50, 100, 200],
-            labels = [],
-            from, to;
-
-        for (var i = 0; i < grades.length; i++) {
-            from = grades[i];
-            to = grades[i + 1];
-
-            labels.push(
-                '<i style="background:' + getColor(from + 1) + '"></i> ' +
-                from + (to ? '&ndash;' + to : '+'));
-        }
-
-        div.innerHTML = labels.join('<br>');
-        return div;
-    };
-}
-
-function getColor(d) {
-    return d > 200 ? '#800026' :
-        d > 100 ? '#BD0026' :
-            d > 50 ? '#E31A1C' :
-                d > 10 ? '#FC4E2A' :
-                    d > 5 ? '#FD8D3C' :
-                        d > 1 ? '#FEB24C' :
-                            d > 0 ? '#FED976' :
-                                '#FFEDA0';
-}
-
-function style(feature) {
-    return {
-        weight: 2,
-        opacity: 1,
-        color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.7,
-        fillColor: getColor(feature.properties.infected)
-    };
-}
-
-function highlightFeature(e) {
-    var layer = e.target;
-
-    layer.setStyle({
-        weight: 5,
-        color: '#666',
-        dashArray: '',
-        fillOpacity: 0.7
-    });
-
-    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        layer.bringToFront();
-    }
-
-    info.update(layer.feature.properties);
-}
-
-var geojson;
-
-function resetHighlight(e) {
-    geojson.resetStyle(e.target);
-    info.update();
-}
-
-function zoomToFeature(e) {
-    map.fitBounds(e.target.getBounds());
-}
-
-function onEachFeature(feature, layer) {
-    layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: zoomToFeature
-    });
-}
-
-map.on('overlayadd', onOverlayAdd);
-map.on('overlayremove', onOverlayRemove);
-
-function onOverlayAdd(e) {
-    // console.log(e)
-    e.name == "จำนวนผู้ติดเชื้อรายจังหวัด" ? legend.addTo(map) : null;
-    e.name == "จำนวนผู้ติดเชื้อรายจังหวัด" ? info.addTo(map) : null;
-
-    // legend.addTo(map);
-    // info.addTo(map);
-}
-
-function onOverlayRemove(e) {
-    // this.removeControl(legend);
-    // this.removeControl(info);
-    e.name == "จำนวนผู้ติดเชื้อรายจังหวัด" ? this.removeControl(legend) : null;
-    e.name == "จำนวนผู้ติดเชื้อรายจังหวัด" ? this.removeControl(info) : null;
-}
-
 

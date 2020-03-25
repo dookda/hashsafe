@@ -1,5 +1,12 @@
-$(document).ready(function () {
-    loadMap();
+let userid;
+$(document).ready(async function () {
+    await liff.init({ liffId: "1653987548-9OOmkKbD" }, () => { }, err => console.error(err.code, error.message));
+
+    const profile = await liff.getProfile();
+    userid = profile.userId;
+    // console.log(userid);
+    await loadMap();
+    lineProfile();
     getAccount();
 });
 
@@ -8,7 +15,7 @@ var map = L.map('map', {
     zoom: 13
 });
 
-var urlParams = new URLSearchParams(window.location.search);
+// var urlParams = new URLSearchParams(window.location.search);
 var marker, gps, dataurl, tam, amp, pro, x, y;
 var url = 'https://rti2dss.com:3200';
 // var url = 'http://localhost:3100';
@@ -30,7 +37,7 @@ function loadMap() {
         maxZoom: 20,
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     });
-    var pro = L.tileLayer.wms("https://cors-anywhere.herokuapp.com/http://rti2dss.com:8080/geoserver/th/wms?", {
+    var pro = L.tileLayer.wms("http://rti2dss.com:8080/geoserver/th/wms?", {
         layers: 'th:province_4326',
         format: 'image/png',
         transparent: true
@@ -91,12 +98,15 @@ var lc = L.control.locate({
 lc.start();
 
 var isNew = true;
-function getAccount() {
+
+async function getAccount() {
+    // const profile = await liff.getProfile();
+    // alert(profile.userId)
     const obj = {
-        userid: urlParams.get('userid')
+        userid: userid
     }
     $.post(url + '/anticov-api/getaccount', obj).done((res) => {
-        console.log(res.data)
+        // console.log(res.data)
         $("#n").text('Save');
         if (res.data.length > 0) {
             isNew = false;
@@ -104,16 +114,28 @@ function getAccount() {
             $('#birthdate').val(res.data[0].birthdate);
             $('#sex').val(res.data[0].sex);
             $('#healthy').val(res.data[0].healthy);
-
             $("#n").text('Update');
         }
     })
 }
 
+async function lineProfile() {
+    const profile = await liff.getProfile();
+    $('#pictureUrl').attr('src', profile.pictureUrl);
+    // $('#userId').text(profile.userId);
+    $('#statusMessage').text(profile.statusMessage);
+    $('#displayName').text(profile.displayName);
+}
+
+function closed() {
+    liff.closeWindow();
+}
+
+
 $('#fieldForm').submit(function (e) {
     e.preventDefault();
     const obj = {
-        userid: urlParams.get('userid'),
+        userid: userid,
         ocupation: $('#ocupation').val(),
         birthdate: $('#birthdate').val(),
         sex: $('#sex').val(),

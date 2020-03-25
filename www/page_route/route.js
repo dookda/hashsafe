@@ -1,4 +1,5 @@
-$(document).ready(function () {
+$(document).ready(async function () {
+    await liff.init({ liffId: "1653984157-0qam36em" })
     loadMap();
 });
 
@@ -40,22 +41,13 @@ function loadMap() {
         "แผนที่ถนน": grod,
         "แผนที่ภาพถ่าย": ghyb
     }
-    var overlayMap = {
-        "ขอบจังหวัด": pro.addTo(map)
-    }
-    L.control.layers(baseMap, overlayMap).addTo(map);
 }
 
 var place;
-function onLocationFound(e) {
-    // console.log(e)
+async function onLocationFound(e) {
     x = e.latlng.lat;
     y = e.latlng.lng;
-    gps = L.marker(e.latlng, { draggable: true });
-    // gps.addTo(map).bindPopup("คุณอยู่ที่นี่").openPopup();
-    // gps.on('dragend', (e) => {
-    //     console.log(e)
-    // })
+    gps = await L.marker(e.latlng, { draggable: true });
 }
 
 function onLocationError(e) {
@@ -82,41 +74,54 @@ var lc = L.control.locate({
 
 lc.start();
 
+
+function checkStatus() {
+    console.log(gps._latlng)
+    if (!gps._latlng) {
+        alert('ไม่พบพิกัดของท่าน กรุณาเปิด gps แล้วลองใหม่อีกครั้ง')
+    } else {
+        loadData();
+    }
+}
+
 // copy from nui
 let covidlab = L.layerGroup().addTo(map);
-$.get('http://localhost:3200/anticov-api/labcovid').done((res) => {
-    const items = res.data;
+function loadData() {
+    $.ajax({
+        url: url + '/anticov-api/labcovid',
+        method: 'get',
+        success: function (res) {
+            const items = res.data;
 
-    const icon = './img/shield.png';
-    const iconMarker = L.icon({
-        iconUrl: icon,
-        iconSize: [32, 35],
-        iconAnchor: [12, 37],
-        popupAnchor: [5, -36]
-    });
+            const icon = 'https://github.com/mapedia-th/away-covid/blob/master/img/hospital.png?raw=true';
+            const iconMarker = L.icon({
+                iconUrl: icon,
+                iconSize: [50, 50],
+                // iconAnchor: [12, 37],
+                // popupAnchor: [5, -36]
+            });
 
 
-    $.each(items, function (i, item) {
-        // console.log(gps._latlng)
-        let mk = L.marker([Number(item.lat), Number(item.long)], {
-            icon: iconMarker
-        }).bindPopup(
-            '<br/><span >สถานที่: </span>' + item.name +
-            '<br/><span >ลิ้งค์: </span><a href="https://www.google.com/maps/dir/' + gps._latlng.lat + ',' + gps._latlng.lng + '/' + Number(item.lat) + ',' + Number(item.long) + '/data=!3m1!4b1!4m2!4m1!3e0">เส้นทาง</a>'
-        );
+            items.forEach(item => {
+                let mk = L.marker([Number(item.lat), Number(item.long)], {
+                    icon: iconMarker
+                }).bindPopup(
+                    '<br/><span >สถานที่: </span>' + item.name +
+                    '<br/><span >ลิ้งค์: </span><a href="https://www.google.com/maps/dir/' + gps._latlng.lat + ',' + gps._latlng.lng + '/' + Number(item.lat) + ',' + Number(item.long) + '/data=!3m1!4b1!4m2!4m1!3e0">เส้นทาง</a>'
+                );
 
-        mk.addTo(covidlab);
+                mk.addTo(covidlab);
 
-        $('#select_place').append($('<option>', {
-            value: item.lat + ',' + item.long,
-            text: item.name
-        }));
-    });
-})
-
+                $('#select_place').append($('<option>', {
+                    value: item.lat + ',' + item.long,
+                    text: item.name
+                }));
+            });
+        }
+    })
+}
 
 $('#select_place').change(e => {
     let latlng = e.target.value.split(",");
-    map.setView([Number(latlng[0]), Number(latlng[1])], 17);
-    console.log(latlng)
+    map.setView([Number(latlng[0]), Number(latlng[1])], 19);
 })
