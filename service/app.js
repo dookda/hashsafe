@@ -264,5 +264,22 @@ app.get('/anticov-api/getallstore', (req, res) => {
     })
 })
 
+app.get('/anticov-api/getallstore/:lat/:lng/:buff', (req, res) => {
+    const lat = req.params.lat;
+    const lng = req.params.lng;
+    const buff = req.params.buff;
+    const sql = `SELECT *, st_x(geom) as lng, st_y(geom) as lat  
+    FROM drugstore
+    WHERE ST_DWithin(ST_Transform(geom,3857), 
+    ST_Transform(ST_GeomFromText('POINT(${lng} ${lat})',4326), 3857), ${buff}) = 'true'`;
+    cvm.query(sql)
+        .then((data) => {
+            res.status(200).json({
+                status: 'success',
+                message: 'get disease',
+                data: data.rows
+            });
+        })
+})
 
 module.exports = app;

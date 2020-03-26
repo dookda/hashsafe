@@ -52,13 +52,16 @@ function loadInfectedMap() {
 
     info.addTo(infectedMap);
 
+    $.get('https://rti2dss.com/saveme/page_upload/upload/coviddata.geojson').done((res) => {
+        let json = JSON.parse(res);
+        $("#update").text(json.features[0].properties.update);
+        geojson = L.geoJson(JSON.parse(res), {
+            style: style,
+            onEachFeature: onEachFeature
+        }).addTo(infectedMap);
+    })
 
-    geojson = L.geoJson(infected, {
-        style: style,
-        onEachFeature: onEachFeature
-    }).addTo(infectedMap);
-
-    infectedMap.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
+    // infectedMap.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
 
 
     var legend = L.control({ position: 'bottomright' });

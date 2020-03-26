@@ -22,17 +22,20 @@
                 <div class="dcard">
                     <h1 style="font-weight: bold">upload covid-19</h1>
                     <h4>อัพโหลดข้อมูล js</h4>
-                    ตัวอย่างไฟล์ที่ใช้ในการอัพโหลด <a href="infected_prov.js">infected_prov.js</a>
+                    นำข้อมูลรายงานผู้ติดเชื้อมา join กับ <a href="upload/th_pro_sim_4326.zip">th_pro_sim_4326.shp</a> จากนั้นบันทึกเป็นไฟล์ geojson ก่อนอัพโหลดเข้าสู่ระบบ <br>
+                    (ตัวอย่างไฟล์ที่ใช้ในการอัพโหลด <a href="upload/coviddata.geojson">coviddata.geojson</a>)
                     <hr>
-                    <form action="upload.php" method="post" enctype="multipart/form-data">
+                    <form enctype="multipart/form-data" action="index.php" method="POST">
 
                         <div class="form-group">
-                            <input type="file" name="anyfile" id="anyfile">
+                            <input type="file" name="uploaded_file" accept=".geojson">
                         </div>
                         <hr>
                         <button type="submit" name="submit" value="Upload" class="btn btn-success">ส่งข้อมูล</button>
                         <button type="button" id="refresh" onclick="refreshPage()"
                             class="btn btn-outline-info">refresh</button>
+                            <hr>
+                            อัพเดท: <span id="update"></span>
                     </form>
                 </div>
             </div>
@@ -44,7 +47,21 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
-<script src="./upload/infected_prov.js"></script>
+<!-- <script src="./upload/infected_prov.js"></script> -->
 <script src="upload.js"></script>
 
 </html>
+
+<?PHP
+  if(!empty($_FILES['uploaded_file']))
+  {
+    $path = "upload/";
+    $path = $path . basename( $_FILES['uploaded_file']['name']);
+
+    if(move_uploaded_file($_FILES['uploaded_file']['tmp_name'], $path)) {
+    //   echo "The file ".  basename( $_FILES['uploaded_file']['name'])." has been uploaded";
+    } else{
+        echo "There was an error uploading the file, please try again!";
+    }
+  }
+?>

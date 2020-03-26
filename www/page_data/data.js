@@ -143,7 +143,7 @@ function getLabcovid() {
             );;
         }
     });
-    layerControl.addOverlay(hospitals.addTo(map), 'สถานที่รับตรวจ COVID 19');
+    layerControl.addOverlay(hospitals.addTo(map), '<img src="../img/shield.png" style="width:30px;"/>สถานที่รับตรวจ COVID 19');
 }
 
 function labPopup(feature, layer) {
@@ -154,8 +154,8 @@ function labPopup(feature, layer) {
     });
 }
 
-var hr_all = 6;
-var hr_me = 120;
+var hr_all = 168;
+var hr_me = 336;
 
 var pntAll = [];
 function getHeatAll() {
@@ -170,7 +170,7 @@ function getHeatAll() {
             gradient: { 0.4: 'OliveDrab', 0.5: 'Orange', 1: 'Coral' },
             blur: 40
         });
-        layerControl.addOverlay(heatLyr, 'ความหนาแน่นของผู้ใช้ทั้งหมด');
+        layerControl.addOverlay(heatLyr, '<img src="../img/6.jpg" style="width:30px;"/>ความหนาแน่นของผู้ใช้ทั้งหมด');
     })
 }
 
@@ -187,7 +187,7 @@ function getHeatLv1() {
             gradient: { 0.4: 'PaleGreen', 0.5: 'MediumSeaGreen', 1: 'ForestGreen' },
             blur: 50
         });
-        layerControl.addOverlay(heatLyr.addTo(map), 'กลุ่มผู้ใช้ที่สบายดี');
+        layerControl.addOverlay(heatLyr.addTo(map), '<img src="../img/1.jpg" style="width:30px;"/>กลุ่มผู้ใช้ที่สบายดี');
     })
 }
 
@@ -204,7 +204,7 @@ function getHeatLv2() {
             gradient: { 0.4: 'Plum', 0.5: 'Orchid', 1: 'DarkOrchid' },
             blur: 50
         });
-        layerControl.addOverlay(heatLyr, 'กลุ่มผู้ใช้ที่ไม่แน่ใจ');
+        layerControl.addOverlay(heatLyr, '<img src="../img/3.jpg" style="width:30px;"/>กลุ่มผู้ใช้ที่ไม่แน่ใจ');
     })
 }
 
@@ -221,7 +221,7 @@ function getHeatLv3() {
             gradient: { 0.4: 'PeachPuff', 0.5: 'Coral', 1: 'OrangeRed' },
             blur: 50
         });
-        layerControl.addOverlay(heatLyr, 'กลุ่มผู้ใช้ที่คิดว่าเสี่ยง');
+        layerControl.addOverlay(heatLyr, '<img src="../img/5.jpg" style="width:30px;"/>กลุ่มผู้ใช้ที่คิดว่าเสี่ยง');
     })
 }
 
@@ -238,7 +238,7 @@ function getHeatLv4() {
             gradient: { 0.4: 'LightCoral', 0.5: 'Crimson', 1: 'Red' },
             blur: 50
         });
-        layerControl.addOverlay(heatLyr, 'กลุ่มผู้ใช้ที่ป่วย');
+        layerControl.addOverlay(heatLyr, '<img src="../img/4.jpg" style="width:30px;"/>กลุ่มผู้ใช้ที่ป่วย');
     })
 }
 
@@ -260,7 +260,7 @@ function getHeateMe() {
             gradient: { 0.4: 'lightskyblue', 0.5: 'lemonchiffon', 1: 'lightcoral' },
             blur: 50
         });
-        layerControl.addOverlay(heatLyr.addTo(map), 'สถานที่ที่เราไปบ่อย');
+        layerControl.addOverlay(heatLyr.addTo(map), '<img src="../img/2.jpg" style="width:30px;"/>สถานที่ที่เราไปบ่อย');
     })
 }
 
