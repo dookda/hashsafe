@@ -1,0 +1,23 @@
+body {
+  font-family: "Kanit", sans-serif;
+}
+
+้h2 {
+  font-family: "Kanit", sans-serif;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+#map {
+  height: 70vh;
+  width: 100%;
+  /* border-radius: 10px; */
+}

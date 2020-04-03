@@ -15,59 +15,54 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit&display=swap">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
-  <link rel="stylesheet" href="stat.css">
+  <link rel="stylesheet" href="share.css">
 </head>
 
 <body>
-  <div class="container-fluid mt-2 mb-2">
-    <div class="row">
-      <div class="col-4 p-2">
-        <div class="card" style="background-color: #ff8357;">
-          <div class="card-body text-center p-1">
-            <p class="card-text">ผู้ติดเชื้อสะสม: <br> <span style="font-size: large;" id="paccum"></span> ราย</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-4 p-2">
-        <div class="card" style="background-color: #fac172;">
-          <div class="card-body text-center p-1">
-            <p class="card-text">ผู้ติดเชื้อใหม่: <br> <span style="font-size: large;" id="pnew"></span> ราย</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-4 p-2">
-        <div class="card" style="background-color: #e25b45;">
-          <div class="card-body text-center p-1">
-            <p class="card-text">เสียชีวิต: <br> <span style="font-size: large;" id="death"></span> ราย</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    อัพเดท: <span id="update"></span>
-  </div>
 
   <div class="p-0">
     <div class="map" id="map"></div>
   </div>
 
-  <div class="container-fluid">
-    <label>จำนวนผู้ป่วย แยกตามจังหวัด:</label>
-    <div id="chartByProv"></div>
+  <div class="container-fluid  mt-2">
+    <!-- <div style="height: 50px;"> -->
+    <span style="font-size: 16px;">ตำแหน่งสำคัญและจุดแบ่งปันสิ่งต่างๆ</span>
+    <div class="row">
+      <div class="col-4">
+        <img id="risk" width="20px"><br>
+        <span>ตำแหน่งเสี่ยง</span>
+      </div>
+      <div class="col-4">
+        <img id="close" width="20px"><br>
+        <span>สถานที่ปิดทำการ</span>
+      </div>
+      <div class="col-4">
+        <img id="stop" width="20px"><br>
+        <span>จุดตรวจ</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-4">
+        <img id="food" width="20px"><br>
+        <span>อาหารและเครื่องดื่ม</span>
+      </div>
+      <div class="col-4">
+        <img id="mask" width="20px"><br>
+        <span>หน้ากากและแอลกอฮอล์</span>
+      </div>
+    </div>
+    <!-- </div> -->
   </div>
 
-  <div class="container-fluid">
-    <label>จำนวนผู้ป่วย แยกตามวันที่ตรวจพบ:</label>
-    <div id="chartToday"></div>
-  </div>
-
-  <div class="container-fluid">
+  <!-- <div class="container-fluid">
     <div class="footer btn-group special" role="group" id="app_vue">
-      <!-- <button type="button" class="btn btn-default">
+      <button type="button" class="btn btn-default">
         <i class="fa fa-calendar" style='font-size:24px' aria-hidden="true"></i>&nbsp;&nbsp; อัพเดท: <span
           id="update"></span>
-      </button> -->
+      </button>
     </div>
-  </div>
+  </div> -->
 </body>
 
 <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
@@ -81,6 +76,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
-<script src="stat.js"></script>
+<script src="../marker.js"></script>
+<script src="share.js"></script>
 
 </html>
