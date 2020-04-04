@@ -230,7 +230,7 @@ info.addTo(map);
 
 async function stat() {
     await $.get('https://covid19.th-stat.com/api/open/today').done(res => {
-        console.log(res)
+        // console.log(res)
         $('#paccum').text(res.Confirmed);
         $('#pnew').text(res.NewConfirmed);
         $('#death').text(res.Deaths);
@@ -243,7 +243,7 @@ async function getInfect() {
     await $.get('https://covid19.th-stat.com/api/open/timeline').done(async (res) => {
         // console.log(res.Data)
         let data = await res.Data;
-        let Date = await data.map(obj => { return obj.Date; });
+        let date = await data.map(obj => { return obj.Date; });
         let NewConfirmed = await data.map(obj => { return obj.NewConfirmed; });
         let NewRecovered = await data.map(obj => { return obj.NewRecovered; });
         let NewHospitalized = await data.map(obj => { return obj.NewHospitalized; });
@@ -253,89 +253,121 @@ async function getInfect() {
         let Hospitalized = data.map(obj => { return obj.Hospitalized; });
         let Deaths = data.map(obj => { return obj.Deaths; });
 
-        getToday(NewConfirmed, Confirmed, Recovered, Date)
-
+        getToday(NewConfirmed, Confirmed, date)
         $("#update").text(arr.pop());
+    })
 
-        // let counts = {};
-        // arr.forEach(el => counts[el] = 1 + (counts[el] || 0))
-        // let cat = Object.keys(counts);
-        // let dat = Object.values(counts);
-        // getChart(dat, cat, '#chartByDate', false, 'วันที่', 'จำนวน (ราย)', 400);
+    await $.get('https://covid19.th-stat.com/api/open/cases').done(async (res) => {
+        let data = await res.Data;
+        let week = data.map(obj => { return moment(obj.ConfirmDate).isoWeek() })
+        let age = data.map(obj => {
+            if (obj.Age < 10) {
+                return 10;
+            } else if (obj.Age < 20) {
+                return 20;
+            } else if (obj.Age < 30) {
+                return 30;
+            } else if (obj.Age < 40) {
+                return 40;
+            } else if (obj.Age < 50) {
+                return 50;
+            } else if (obj.Age < 60) {
+                return 60;
+            } else {
+                return 99;
+            }
+        });
+
+        let b1 = [];
+        let b2 = [];
+        let b3 = [];
+        let b4 = [];
+        let b5 = [];
+        let b6 = [];
+        let b9 = [];
+        let wk = []
+        for (let index = 1; index <= moment(Date.now()).isoWeek(); index++) {
+            let a1 = 0; let a2 = 0; let a3 = 0; let a4 = 0; let a5 = 0; let a6 = 0; let a9 = 0;
+            week.forEach((w, i) => {
+                if (w == index) {
+                    age[i] == 10 ? a1 += 1 : null;
+                    age[i] == 20 ? a2 += 1 : null;
+                    age[i] == 30 ? a3 += 1 : null;
+                    age[i] == 40 ? a4 += 1 : null;
+                    age[i] == 50 ? a5 += 1 : null;
+                    age[i] == 60 ? a6 += 1 : null;
+                    age[i] == 99 ? a9 += 1 : null;
+                }
+            })
+            await b1.push(a1);
+            await b2.push(a2);
+            await b3.push(a3);
+            await b4.push(a4);
+            await b5.push(a5);
+            await b6.push(a6);
+            await b9.push(a9);
+            await wk.push('w' + index);
+        }
+        getCase(b1, b2, b3, b4, b5, b6, b9, wk)
     })
 }
 
-function getToday(a, b, c, date) {
+function getToday(a, b, date) {
+
     var options = {
-        series: [{
-            name: 'ผู้ป่วยใหม่',
-            type: 'column',
-            data: a
-        }, {
-            name: 'ผู้ป่วยสะสม',
-            type: 'area',
-            data: b
-        }],
+        series: [
+            {
+                name: "ผู้ป่วยใหม่",
+                data: a
+            },
+            {
+                name: "ผู้ป่วยสะสม",
+                data: b
+            }
+        ],
         chart: {
             height: 350,
             type: 'line',
-            stacked: false,
+            dropShadow: {
+                enabled: true,
+                color: '#000',
+                top: 18,
+                left: 7,
+                blur: 10,
+                opacity: 0.2
+            },
+            toolbar: {
+                show: false
+            }
+        },
+        colors: ['#da9649', '#b22924'],
+        dataLabels: {
+            enabled: false,
         },
         stroke: {
-            width: [0, 2, 5],
+            width: [2, 2],
             curve: 'smooth'
         },
-        plotOptions: {
-            bar: {
-                columnWidth: '50%'
-            }
-        },
-
-        fill: {
-            opacity: [0.85, 0.25, 1],
-            gradient: {
-                inverseColors: false,
-                shade: 'light',
-                type: "vertical",
-                opacityFrom: 0.85,
-                opacityTo: 0.55,
-                stops: [0, 100, 100, 100]
-            }
-        },
-        labels: date,
-        markers: {
-            size: 0
+        grid: {
+            borderColor: '#e7e7e7',
+            row: {
+                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                opacity: 0.5
+            },
         },
         xaxis: {
-            type: 'วันที่'
+            categories: date,
         },
         yaxis: {
             title: {
-                text: 'ราย',
-            },
-            min: 0
-        },
-        tooltip: {
-            shared: true,
-            intersect: false,
-            y: {
-                formatter: function (y) {
-                    if (typeof y !== "undefined") {
-                        return y.toFixed(0) + " ราย";
-                    }
-                    return y;
-
-                }
+                text: 'จำนวนผู้ป่วย (ราย)'
             }
-        }
+        },
     };
 
     var chart = new ApexCharts(document.querySelector("#chartToday"), options);
     chart.render();
 }
-
-
-
 
 async function getChart(dat, cat, id, layout, xLabel, yLabel, height) {
     var options = {
@@ -370,9 +402,49 @@ async function getChart(dat, cat, id, layout, xLabel, yLabel, height) {
             colors: ['#cc0000']
         }
     };
-
     var chart = new ApexCharts(document.querySelector(id), options);
     chart.render();
 }
 
+async function getCase(b1, b2, b3, b4, b5, b6, b9, w) {
+    var options = {
+        series: [{
+            name: 'อายุ 0-10ปี',
+            data: b1
+        }, {
+            name: 'อายุ 10-20ปี',
+            data: b2
+        }, {
+            name: 'อายุ 20-30ปี',
+            data: b3
+        }, {
+            name: 'อายุ 30-40ปี',
+            data: b4
+        }, {
+            name: 'อายุ 40-50ปี',
+            data: b5
+        }, {
+            name: 'อายุ 50-60ปี',
+            data: b6
+        }, {
+            name: 'อายุ >60ปี',
+            data: b9
+        }],
+        chart: {
+            height: 350,
+            type: 'heatmap',
+        },
+        xaxis: {
+            type: 'category',
+            categories: w
+        },
+        dataLabels: {
+            enabled: false
+        },
+        colors: ["#fb0012"],
+    };
+
+    var chart = new ApexCharts(document.querySelector("#chartCase"), options);
+    chart.render();
+}
 

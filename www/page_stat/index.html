@@ -22,23 +22,27 @@
   <div class="container-fluid mt-2 mb-2">
     <div class="row">
       <div class="col-4 p-2">
-        <div class="card" style="background-color: #ff8357;">
+        <div class="card" style="background-color: #d63933;">
           <div class="card-body text-center p-1">
-            <p class="card-text">ผู้ติดเชื้อสะสม: <br> <span style="font-size: large;" id="paccum"></span> ราย</p>
+            <p class="card-text" style="color: #fff;">ผู้ติดเชื้อสะสม: <br> <span style="font-size: large;"
+                id="paccum"></span> ราย</p>
           </div>
         </div>
       </div>
       <div class="col-4 p-2">
-        <div class="card" style="background-color: #fac172;">
+        <div class="card" style="background-color: #a02520;">
           <div class="card-body text-center p-1">
-            <p class="card-text">ผู้ติดเชื้อใหม่: <br> <span style="font-size: large;" id="pnew"></span> ราย</p>
+            <p class="card-text" style="color: #fff;">ผู้ติดเชื้อใหม่: <br> <span style="font-size: large; "
+                id="pnew"></span>
+              ราย</p>
           </div>
         </div>
       </div>
       <div class="col-4 p-2">
-        <div class="card" style="background-color: #e25b45;">
+        <div class="card" style="background-color: #611613;">
           <div class="card-body text-center p-1">
-            <p class="card-text">เสียชีวิต: <br> <span style="font-size: large;" id="death"></span> ราย</p>
+            <p class="card-text" style="color: #fff;">เสียชีวิต: <br> <span style="font-size: large;" id="death"></span>
+              ราย</p>
           </div>
         </div>
       </div>
@@ -51,13 +55,18 @@
   </div>
 
   <div class="container-fluid">
-    <label>จำนวนผู้ป่วย แยกตามจังหวัด:</label>
+    <label style="font-size: large;">จำนวนผู้ป่วย จำแนกตามจังหวัด:</label>
     <div id="chartByProv"></div>
   </div>
 
   <div class="container-fluid">
-    <label>จำนวนผู้ป่วย แยกตามวันที่ตรวจพบ:</label>
+    <label style="font-size: large;">จำนวนผู้ป่วย จำแนกตามวันที่ตรวจพบ:</label>
     <div id="chartToday"></div>
+  </div>
+
+  <div class="container-fluid">
+    <label style="font-size: large;">จำนวนผู้ป่วย จำแนกตามอายุ:</label>
+    <div id="chartCase"></div>
   </div>
 
   <div class="container-fluid">
