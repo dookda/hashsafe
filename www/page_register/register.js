@@ -1,14 +1,37 @@
 let userid;
 $(document).ready(async function () {
-    await liff.init({ liffId: "1653987548-9OOmkKbD" }, () => { }, err => console.error(err.code, error.message));
+    await liff.init({
+        liffId: "1653987548-9OOmkKbD"
+    }, (a) => {
+        console.log(a)
+    },
+        err => console.error(err.code, error.message)
+    );
 
-    const profile = await liff.getProfile();
-    userid = profile.userId;
-    // console.log(userid);
-    await loadMap();
-    lineProfile();
+    await getUserid();
+
+    loadMap();
     getAccount();
 });
+
+async function getUserid() {
+    const profile = await liff.getProfile();
+    console.log(profile)
+    userid = await profile.userId;
+
+    $('#profile').attr('src', await profile.pictureUrl);
+    // $('#userId').text(profile.userId);
+    $('#statusMessage').text(await profile.statusMessage);
+    $('#displayName').text(await profile.displayName);
+}
+
+// async function lineProfile() {
+//     const profile = await liff.getProfile();
+//     $('#pictureUrl').attr('src', profile.pictureUrl);
+//     // $('#userId').text(profile.userId);
+//     $('#statusMessage').text(profile.statusMessage);
+//     $('#displayName').text(profile.displayName);
+// }
 
 var map = L.map('map', {
     center: [16.820378, 100.265787],
@@ -119,13 +142,7 @@ async function getAccount() {
     })
 }
 
-async function lineProfile() {
-    const profile = await liff.getProfile();
-    $('#pictureUrl').attr('src', profile.pictureUrl);
-    // $('#userId').text(profile.userId);
-    $('#statusMessage').text(profile.statusMessage);
-    $('#displayName').text(profile.displayName);
-}
+
 
 function closed() {
     liff.closeWindow();

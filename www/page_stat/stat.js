@@ -410,7 +410,7 @@ async function getCase(b1, b2, b3, b4, b5, b6, b9, w) {
     var options = {
         series: [{
             name: 'อายุ 0-10ปี',
-            data: b1
+            data: b1,
         }, {
             name: 'อายุ 10-20ปี',
             data: b2
