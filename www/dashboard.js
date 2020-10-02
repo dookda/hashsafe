@@ -5,7 +5,6 @@ $(document).ready(function () {
     getChart();
 });
 
-
 //  member
 var membermap = L.map('membermap', {
     center: [13.802664, 99.950034],
@@ -98,10 +97,10 @@ function loadDensitymap() {
     }
 
     let densityLayerControl = L.control.layers(baseMap).addTo(densmap);
-    densityLayerControl.addOverlay(pro.addTo(densmap), '<img src="legend/ST_Amphoe_1.png" /> จังหวัด');
+    densityLayerControl.addOverlay(pro.addTo(densmap), '<img style="height:15px;" src="legend/ST_Amphoe_1.png" /> จังหวัด');
 
 
-    let hr = 24;
+    let hr = 20000;
     let pntAll = [];
     $.get(url + '/anticov-api/getweloc/' + hr).done((res) => {
         var pnt = res.data;
@@ -117,7 +116,6 @@ function loadDensitymap() {
         densityLayerControl.addOverlay(heatLyr.addTo(densmap), 'ความหนาแน่นของผู้ใช้ทั้งหมด');
     })
 }
-
 
 // infected map
 let infectedMap = L.map('infectedMap', {

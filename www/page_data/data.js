@@ -1,7 +1,7 @@
-$(document).ready(async function() {
+$(document).ready(async function () {
   await liff.init(
     { liffId: "1653987548-lvv7BqpK" },
-    () => {},
+    () => { },
     err => console.error(err.code, error.message)
   );
   getUserid();
@@ -150,18 +150,18 @@ function getLabcovid() {
 
   hospitals = L.geoJSON(covidlab, {
     // onEachFeature: labPopup,
-    pointToLayer: function(feature, latlng) {
+    pointToLayer: function (feature, latlng) {
       // console.log(feature)
       return L.marker(latlng, {
         icon: iconMarker
       }).bindPopup(
         "<br/><span >สถานที่: </span>" +
-          feature.properties.Name +
-          '<br/><span >ลิ้งค์: </span><a href="' +
-          feature.properties.PopupInfo +
-          '">' +
-          feature.properties.PopupInfo +
-          "</a>"
+        feature.properties.Name +
+        '<br/><span >ลิ้งค์: </span><a href="' +
+        feature.properties.PopupInfo +
+        '">' +
+        feature.properties.PopupInfo +
+        "</a>"
       );
     }
   });
@@ -214,17 +214,17 @@ async function getData() {
             : (img = feature.properties.img);
           layer.bindPopup(
             '<span style="font-family: Kanit; font-size: 16px;"> ' +
-              feature.properties.sname +
-              "</span></br>" +
-              "ประเภท: " +
-              feature.properties.stype +
-              "</br>" +
-              "คำอธิบาย: " +
-              feature.properties.sdesc +
-              "</br>" +
-              '<img src="' +
-              img +
-              '" width="250px">'
+            feature.properties.sname +
+            "</span></br>" +
+            "ประเภท: " +
+            feature.properties.stype +
+            "</br>" +
+            "คำอธิบาย: " +
+            feature.properties.sdesc +
+            "</br>" +
+            '<img src="' +
+            img +
+            '" width="250px">'
           );
         }
       }
@@ -241,8 +241,10 @@ function labPopup(feature, layer) {
   });
 }
 
-var hr_all = 168;
-var hr_me = 336;
+// var hr_all = 168;
+// var hr_me = 336;
+var hr_all = 2880;
+var hr_me = 2880;
 
 var pntAll = [];
 function getHeatAll() {
