@@ -1,14 +1,14 @@
 let userid;
 $(document).ready(async function () {
-    await liff.init({
-        liffId: "1653987548-9OOmkKbD"
-    }, (a) => {
-        console.log(a)
-    },
-        err => console.error(err.code, error.message)
-    );
+    // await liff.init({
+    //     liffId: "1653987548-9OOmkKbD"
+    // }, (a) => {
+    //     console.log(a)
+    // },
+    //     err => console.error(err.code, error.message)
+    // );
 
-    await getUserid();
+    // await getUserid();
 
     loadMap();
     getAccount();
@@ -40,8 +40,8 @@ var map = L.map('map', {
 
 // var urlParams = new URLSearchParams(window.location.search);
 var marker, gps, dataurl, tam, amp, pro, x, y;
-var url = 'https://rti2dss.com:3200';
-// var url = 'http://localhost:3100';
+// var url = 'https://rti2dss.com:3200';
+var url = 'http://localhost:3100';
 
 function loadMap() {
     var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -72,7 +72,7 @@ function loadMap() {
         "แผนที่ภาพถ่าย": ghyb
     }
     var overlayMap = {
-        "ขอบจังหวัด": pro.addTo(map)
+        // "ขอบจังหวัด": pro.addTo(map)
     }
     L.control.layers(baseMap, overlayMap).addTo(map);
 }
@@ -87,13 +87,13 @@ function onLocationFound(e) {
     // gps.on('dragend', (e) => {
     //     console.log(e)
     // })
-    $.get(url + `/acc-api/getaddress/${x}/${y}`).done((res) => {
-        tam = res.data[0].tam_name;
-        amp = res.data[0].amp_name;
-        pro = res.data[0].pro_name;
-        place = `ต.${tam} อ.${amp} จ.${pro}`;
-        $('#address').val(place)
-    })
+    // $.get(url + `/acc-api/getaddress/${x}/${y}`).done((res) => {
+    //     tam = res.data[0].tam_name;
+    //     amp = res.data[0].amp_name;
+    //     pro = res.data[0].pro_name;
+    //     place = `ต.${tam} อ.${amp} จ.${pro}`;
+    //     $('#address').val(place)
+    // })
 }
 
 function onLocationError(e) {

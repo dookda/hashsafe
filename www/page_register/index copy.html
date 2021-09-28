@@ -92,23 +92,22 @@
         <label for="vehicle">Current risk</label>
         <select class="form-control" id="healthy" required>
           <option value="0.1" selected>No risk (never go to risk area and never close to risked/infected people)</option>
-          <option value="0.4">Not sure (has some symptoms but never go to risk area or close to risked/infected people)</option>
-          <option value="0.6">Risked (go to risk area or close to the risk/infected people)</option>
-          <option value="1.0">Infected (confirm by doctor)</option>
+          <option value="0.4">ไม่แน่ใจ (มีอาการ แต่ไม่เคยใกล้ชิดกับผู้ป่วยหรือเข้าพื้นที่เสี่ยง)</option>
+          <option value="0.6">คิดว่าเสี่ยง (ใกล้ชิดกับผู้ป่วยหรือเข้าพืนที่เสี่ยง)</option>
+          <option value="1.0">ป่วยแล้วนะ (หมอยืนยันแล้ว)</option>
         </select>
       </div>
 
 
       <div class="form-group">
-        <label for="address">Current location:</label>
-        <input type="text" class="form-control" value="Suthep, Mueang Chiang Mai, Chiang Mai" disabled>
-        <!-- <input type="text" class="form-control" id="address" disabled> -->
+        <label for="address">สถานที่ปัจจุบัน:</label>
+        <input type="text" class="form-control" id="address" disabled>
       </div>
 
       <div class="mt-1">
         <hr>
         <button type="submit" id="button" class="btn btn-success"> <span id='n'>Save</span> </button>
-        <button type="button" id="refresh" onclick="refreshPage()" class="btn btn-outline-info">Refresh</button>
+        <button type="button" id="refresh" onclick="refreshPage()" class="btn btn-outline-info">refresh</button>
       </div>
       <hr>
     </form>

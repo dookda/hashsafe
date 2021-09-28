@@ -1,10 +1,10 @@
 $(document).ready(async function () {
-  await liff.init(
-    { liffId: "1653987548-lvv7BqpK" },
-    () => { },
-    err => console.error(err.code, error.message)
-  );
-  getUserid();
+  // await liff.init(
+  //   { liffId: "1653987548-lvv7BqpK" },
+  //   () => { },
+  //   err => console.error(err.code, error.message)
+  // );
+  // getUserid();
 
   loadMap();
   getLabcovid();
@@ -261,7 +261,8 @@ function getHeatAll() {
     });
     layerControl.addOverlay(
       heatLyr,
-      '<img src="../img/6.jpg" style="width:30px;"/>ความหนาแน่นของผู้ใช้ทั้งหมด'
+      // '<img src="../img/6.jpg" style="width:30px;"/>ความหนาแน่นของผู้ใช้ทั้งหมด'
+      '<img src="../img/6.jpg" style="width:30px;"/>Density of all user'
     );
   });
 }
@@ -281,7 +282,8 @@ function getHeatLv1() {
     });
     layerControl.addOverlay(
       heatLyr.addTo(map),
-      '<img src="../img/1.jpg" style="width:30px;"/>กลุ่มผู้ใช้ที่สบายดี'
+      // '<img src="../img/1.jpg" style="width:30px;"/>กลุ่มผู้ใช้ที่สบายดี'
+      '<img src="../img/1.jpg" style="width:30px;"/>Density of no risk user'
     );
   });
 }
@@ -301,7 +303,7 @@ function getHeatLv2() {
     });
     layerControl.addOverlay(
       heatLyr,
-      '<img src="../img/3.jpg" style="width:30px;"/>กลุ่มผู้ใช้ที่ไม่แน่ใจ'
+      '<img src="../img/3.jpg" style="width:30px;"/>Density of not sure user'
     );
   });
 }
@@ -321,7 +323,7 @@ function getHeatLv3() {
     });
     layerControl.addOverlay(
       heatLyr,
-      '<img src="../img/5.jpg" style="width:30px;"/>กลุ่มผู้ใช้ที่คิดว่าเสี่ยง'
+      '<img src="../img/5.jpg" style="width:30px;"/>Density of risked user'
     );
   });
 }
@@ -341,7 +343,7 @@ function getHeatLv4() {
     });
     layerControl.addOverlay(
       heatLyr,
-      '<img src="../img/4.jpg" style="width:30px;"/>กลุ่มผู้ใช้ที่ป่วย'
+      '<img src="../img/4.jpg" style="width:30px;"/>Density of infected  user'
     );
   });
 }
@@ -366,7 +368,8 @@ function getHeateMe() {
     });
     layerControl.addOverlay(
       heatLyr.addTo(map),
-      '<img src="../img/2.jpg" style="width:30px;"/>สถานที่ที่เราไปบ่อย'
+      // '<img src="../img/2.jpg" style="width:30px;"/>สถานที่ที่เราไปบ่อย'
+      '<img src="../img/2.jpg" style="width:30px;"/>Visited place'
     );
   });
 }

@@ -72,7 +72,7 @@ async function loadInfectedMap() {
             cat.push(e.name)
         })
 
-        getChart(dat, cat, '#chartByProv', true, 'จำนวน (ราย)', 'จังหวัด', 800);
+        getChart(dat, cat, '#chartByProv', true, 'Number of case', 'Province', 800);
 
         geojson = L.geoJson(json, {
             style: style,
@@ -112,7 +112,7 @@ var legend = L.control({
 legend.onAdd = function (infectedMap) {
     var div = L.DomUtil.create('div', 'info legend'),
         grades = [0, 100, 500, 1000, 2000, 5000, 10000, 20000],
-        labels = ['จำนวนผู้ป่วย : ราย'],
+        labels = ['Number of case : case'],
         from, to;
 
     for (var i = 0; i < grades.length; i++) {
@@ -149,8 +149,8 @@ info.onAdd = function (map) {
 };
 
 info.update = function (props) {
-    this._div.innerHTML = '<h4>จำนวนผู้ป่วย COVID-19</h4>' + (props ?
-        '<b>' + props.pro_name + '</b><br />' + props.count + ' ราย'
+    this._div.innerHTML = '<h4>Number of case </h4>' + (props ?
+        '<b>' + props.pro_name + '</b><br />' + props.count + ' '
         : '');
 
 };
@@ -246,11 +246,11 @@ function getToday(a, b, date) {
     var options = {
         series: [
             {
-                name: "ผู้ป่วยใหม่",
+                name: "New cases",
                 data: a
             },
             {
-                name: "ผู้ป่วยสะสม",
+                name: "Accummulated cases",
                 data: b
             }
         ],
@@ -289,7 +289,7 @@ function getToday(a, b, date) {
         },
         yaxis: {
             title: {
-                text: 'จำนวนผู้ป่วย (ราย)'
+                text: 'Number of case'
             }
         },
     };
@@ -338,25 +338,25 @@ async function getChart(dat, cat, id, layout, xLabel, yLabel, height) {
 async function getCase(b1, b2, b3, b4, b5, b6, b9, w) {
     var options = {
         series: [{
-            name: 'อายุ 0-10ปี',
+            name: '0-10 years',
             data: b1,
         }, {
-            name: 'อายุ 10-20ปี',
+            name: '10-20 years',
             data: b2
         }, {
-            name: 'อายุ 20-30ปี',
+            name: '20-30 years',
             data: b3
         }, {
-            name: 'อายุ 30-40ปี',
+            name: '30-40 years',
             data: b4
         }, {
-            name: 'อายุ 40-50ปี',
+            name: '40-50 years',
             data: b5
         }, {
-            name: 'อายุ 50-60ปี',
+            name: '50-60 years',
             data: b6
         }, {
-            name: 'อายุ >60ปี',
+            name: '>60 years',
             data: b9
         }],
         chart: {
