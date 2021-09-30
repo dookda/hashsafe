@@ -35,20 +35,21 @@ async function loadInfectedMap() {
         let js = JSON.parse(res)
         let fs = await js.features;
         let features = [];
-        await $.get('https://covid19.th-stat.com/json/covid19v2/getSumCases.json').done(r => {
-            const cs = r.Province;
-            console.log(cs);
+        await $.get('https://covid19.ddc.moph.go.th/api/Cases/today-cases-by-provinces').done(r => {
+            // const cs = r.province;
+            // console.log(cs);
             fs.map(f => {
-                r.Province.map(i => {
-                    f.properties.PV_EN == i.ProvinceEn ? f.properties.count = i.Count : null
+                // console.log(f);
+                r.map(i => {
+                    f.properties.pro_name == i.province ? f.properties.count = i.new_case : null
                 })
                 features.push(f);
             })
         })
 
-        features.map(i => {
-            i.properties.count ? null : console.log(i.properties.PV_EN);
-        })
+        // features.map(i => {
+        //     i.properties.count ? null : console.log(i.properties.PV_EN);
+        // })
 
         let json = {
             type: "FeatureCollection",
@@ -158,87 +159,88 @@ info.update = function (props) {
 info.addTo(map);
 
 async function stat() {
-    await $.get('https://covid19.th-stat.com/json/covid19v2/getTodayCases.json').done(res => {
+    await $.get('https://covid19.ddc.moph.go.th/api/Cases/today-cases-all').done(res => {
         // console.log(res)
-        $('#paccum').text(res.Confirmed);
-        $('#pnew').text(res.NewConfirmed);
-        $('#death').text(res.Deaths);
-        $('#update').text(res.UpdateDate)
+        $('#paccum').text(res[0].total_case);
+        $('#pnew').text(res[0].new_case);
+        $('#death').text(res[0].total_death);
+        $('#update').text(res[0].update_date)
     })
 }
 
 async function getInfect() {
     let arr = [];
-    await $.get('https://covid19.th-stat.com/json/covid19v2/getTimeline.json').done(async (res) => {
+    await $.get('https://covid19.ddc.moph.go.th/api/Cases/timeline-cases-all').done(async (res) => {
         // console.log(res.Data)
-        let data = await res.Data;
-        let date = await data.map(obj => { return obj.Date; });
-        let NewConfirmed = await data.map(obj => { return obj.NewConfirmed; });
-        let NewRecovered = await data.map(obj => { return obj.NewRecovered; });
-        let NewHospitalized = await data.map(obj => { return obj.NewHospitalized; });
-        let NewDeaths = data.map(obj => { return obj.NewDeaths; });
-        let Confirmed = data.map(obj => { return obj.Confirmed; });
-        let Recovered = data.map(obj => { return obj.Recovered; });
-        let Hospitalized = data.map(obj => { return obj.Hospitalized; });
-        let Deaths = data.map(obj => { return obj.Deaths; });
+        let data = await res;
+        let date = await data.map(obj => { return obj.txn_date; });
+        let NewConfirmed = await data.map(obj => { return obj.new_case; });
+        // let NewRecovered = await data.map(obj => { return obj.NewRecovered; });
+        // let NewHospitalized = await data.map(obj => { return obj.NewHospitalized; });
+        // let NewDeaths = data.map(obj => { return obj.NewDeaths; });
+        let Confirmed = data.map(obj => { return obj.total_case; });
+        // let Recovered = data.map(obj => { return obj.Recovered; });
+        // let Hospitalized = data.map(obj => { return obj.Hospitalized; });
+        // let Deaths = data.map(obj => { return obj.Deaths; });
 
         getToday(NewConfirmed, Confirmed, date)
         $("#update").text(arr.pop());
     })
 
-    // await $.get('https://covid19.th-stat.com/api/open/cases').done(async (res) => {
-    //     let data = await res.Data;
-    //     let week = data.map(obj => { return moment(obj.ConfirmDate).isoWeek() })
-    //     let age = data.map(obj => {
-    //         if (obj.Age < 10) {
-    //             return 10;
-    //         } else if (obj.Age < 20) {
-    //             return 20;
-    //         } else if (obj.Age < 30) {
-    //             return 30;
-    //         } else if (obj.Age < 40) {
-    //             return 40;
-    //         } else if (obj.Age < 50) {
-    //             return 50;
-    //         } else if (obj.Age < 60) {
-    //             return 60;
-    //         } else {
-    //             return 99;
-    //         }
-    //     });
+    await $.get('https://covid19.ddc.moph.go.th/api/Cases/round-3-line-lists').done(async (res) => {
+        let data = await res.data;
+        let week = data.map(obj => { return moment(obj.txn_date).isoWeek() })
+        let age = data.map(obj => {
+            console.log(obj);
+            if (obj.age_number < 10) {
+                return 10;
+            } else if (obj.age_number < 20) {
+                return 20;
+            } else if (obj.age_number < 30) {
+                return 30;
+            } else if (obj.age_number < 40) {
+                return 40;
+            } else if (obj.age_number < 50) {
+                return 50;
+            } else if (obj.age_number < 60) {
+                return 60;
+            } else {
+                return 99;
+            }
+        });
 
-    //     let b1 = [];
-    //     let b2 = [];
-    //     let b3 = [];
-    //     let b4 = [];
-    //     let b5 = [];
-    //     let b6 = [];
-    //     let b9 = [];
-    //     let wk = []
-    //     for (let index = 1; index <= moment(Date.now()).isoWeek(); index++) {
-    //         let a1 = 0; let a2 = 0; let a3 = 0; let a4 = 0; let a5 = 0; let a6 = 0; let a9 = 0;
-    //         week.forEach((w, i) => {
-    //             if (w == index) {
-    //                 age[i] == 10 ? a1 += 1 : null;
-    //                 age[i] == 20 ? a2 += 1 : null;
-    //                 age[i] == 30 ? a3 += 1 : null;
-    //                 age[i] == 40 ? a4 += 1 : null;
-    //                 age[i] == 50 ? a5 += 1 : null;
-    //                 age[i] == 60 ? a6 += 1 : null;
-    //                 age[i] == 99 ? a9 += 1 : null;
-    //             }
-    //         })
-    //         await b1.push(a1);
-    //         await b2.push(a2);
-    //         await b3.push(a3);
-    //         await b4.push(a4);
-    //         await b5.push(a5);
-    //         await b6.push(a6);
-    //         await b9.push(a9);
-    //         await wk.push('w' + index);
-    //     }
-    //     getCase(b1, b2, b3, b4, b5, b6, b9, wk)
-    // })
+        let b1 = [];
+        let b2 = [];
+        let b3 = [];
+        let b4 = [];
+        let b5 = [];
+        let b6 = [];
+        let b9 = [];
+        let wk = []
+        for (let index = 1; index <= moment(Date.now()).isoWeek(); index++) {
+            let a1 = 0; let a2 = 0; let a3 = 0; let a4 = 0; let a5 = 0; let a6 = 0; let a9 = 0;
+            week.forEach((w, i) => {
+                if (w == index) {
+                    age[i] == 10 ? a1 += 1 : null;
+                    age[i] == 20 ? a2 += 1 : null;
+                    age[i] == 30 ? a3 += 1 : null;
+                    age[i] == 40 ? a4 += 1 : null;
+                    age[i] == 50 ? a5 += 1 : null;
+                    age[i] == 60 ? a6 += 1 : null;
+                    age[i] == 99 ? a9 += 1 : null;
+                }
+            })
+            await b1.push(a1);
+            await b2.push(a2);
+            await b3.push(a3);
+            await b4.push(a4);
+            await b5.push(a5);
+            await b6.push(a6);
+            await b9.push(a9);
+            await wk.push('w' + index);
+        }
+        getCase(b1, b2, b3, b4, b5, b6, b9, wk)
+    })
 }
 
 function getToday(a, b, date) {
