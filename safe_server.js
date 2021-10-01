@@ -3,6 +3,7 @@ var fs = require('fs');
 const express = require('express');
 const app = express();
 
+
 // var https_options = {
 //     key: fs.readFileSync("/etc/apache2/ssl/private.key"),
 //     cert: fs.readFileSync("/etc/apache2/ssl/public.crt"),
@@ -12,8 +13,11 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-app.use(cors());
-app.options('*', cors());
+// app.use(cors());
+// app.options('*', cors());
+app.use(cors({
+    origin: '*'
+}));
 
 app.use(bodyParser.json({
     limit: '50mb',

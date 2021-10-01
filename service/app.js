@@ -1,6 +1,7 @@
 const express = require("express");
 const request = require("request");
 const app = express.Router();
+const axios = require('axios');
 const multer = require("multer");
 
 // const http = require('http');
@@ -492,5 +493,39 @@ app.get("/anticov-api/getbyprov/:pro", async (req, res) => {
     });
   });
 });
+
+app.get("/anticov-api/today-cases-by-provinces", (req,res)=>{
+  let url = "https://covid19.ddc.moph.go.th/api/Cases/today-cases-by-provinces";
+  axios.get(url).then(r=>{
+    // console.log(r.data);
+    let data = r.data;
+    res.status(200).json({data})
+  })
+})
+
+app.get("/anticov-api/today-cases-all", (req,res)=>{
+  let url = "https://covid19.ddc.moph.go.th/api/Cases/today-cases-all";
+  axios.get(url).then(r=>{
+    let data = r.data;
+    res.status(200).json({data})
+  })
+})
+
+app.get("/anticov-api/timeline-cases-all", (req,res)=>{
+  let url = "https://covid19.ddc.moph.go.th/api/Cases/timeline-cases-all";
+  axios.get(url).then(r=>{
+    let data = r.data;
+    console.log(data);
+    res.status(200).json({data})
+  })
+})
+
+app.get("/anticov-api/round-3-line-lists", (req,res)=>{
+  let url = "https://covid19.ddc.moph.go.th/api/Cases/round-3-line-lists";
+  axios.get(url).then(r=>{
+    let data = r.data;
+    res.status(200).json({data})
+  })
+})
 
 module.exports = app;

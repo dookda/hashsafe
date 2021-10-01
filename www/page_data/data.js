@@ -167,7 +167,7 @@ function getLabcovid() {
   });
   layerControl.addOverlay(
     hospitals.addTo(map),
-    '<img src="../img/shield.png" style="width:30px;"/>สถานที่รับตรวจ COVID 19'
+    '<img src="../img/shield.png" style="width:30px;"/>Check point COVID 19'
   );
 }
 
@@ -262,7 +262,7 @@ function getHeatAll() {
     layerControl.addOverlay(
       heatLyr,
       // '<img src="../img/6.jpg" style="width:30px;"/>ความหนาแน่นของผู้ใช้ทั้งหมด'
-      '<img src="../img/6.jpg" style="width:30px;"/>Density of all user'
+      '<img src="../img/6.png" style="width:30px;"/>Density of all user'
     );
   });
 }
@@ -283,7 +283,7 @@ function getHeatLv1() {
     layerControl.addOverlay(
       heatLyr.addTo(map),
       // '<img src="../img/1.jpg" style="width:30px;"/>กลุ่มผู้ใช้ที่สบายดี'
-      '<img src="../img/1.jpg" style="width:30px;"/>Density of no risk user'
+      '<img src="../img/1.png" style="width:30px;"/>Density of no risk user'
     );
   });
 }
@@ -303,7 +303,7 @@ function getHeatLv2() {
     });
     layerControl.addOverlay(
       heatLyr,
-      '<img src="../img/3.jpg" style="width:30px;"/>Density of not sure user'
+      '<img src="../img/3.png" style="width:30px;"/>Density of not sure user'
     );
   });
 }
@@ -323,7 +323,7 @@ function getHeatLv3() {
     });
     layerControl.addOverlay(
       heatLyr,
-      '<img src="../img/5.jpg" style="width:30px;"/>Density of risked user'
+      '<img src="../img/5.png" style="width:30px;"/>Density of risked user'
     );
   });
 }
@@ -343,7 +343,7 @@ function getHeatLv4() {
     });
     layerControl.addOverlay(
       heatLyr,
-      '<img src="../img/4.jpg" style="width:30px;"/>Density of infected  user'
+      '<img src="../img/4.png" style="width:30px;"/>Density of infected  user'
     );
   });
 }
@@ -369,7 +369,7 @@ function getHeateMe() {
     layerControl.addOverlay(
       heatLyr.addTo(map),
       // '<img src="../img/2.jpg" style="width:30px;"/>สถานที่ที่เราไปบ่อย'
-      '<img src="../img/2.jpg" style="width:30px;"/>Visited place'
+      '<img src="../img/2.png" style="width:30px;"/>Visited place'
     );
   });
 }

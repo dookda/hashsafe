@@ -2,15 +2,18 @@ $(document).ready(async function () {
 
     await liff.init({ liffId: "1653987548-K3B2gV1Z" })
     loadInfectedMap();
+
     // getChart();
     // getCov()
+
     getInfect();
     stat();
 });
 
 let map = L.map('map', {
     center: [13.802664, 100.890034],
-    zoom: 5
+    zoom: 5,
+    scrollWheelZoom: false
 });
 
 
@@ -35,12 +38,9 @@ async function loadInfectedMap() {
         let js = JSON.parse(res)
         let fs = await js.features;
         let features = [];
-        await $.get('https://covid19.ddc.moph.go.th/api/Cases/today-cases-by-provinces').done(r => {
-            // const cs = r.province;
-            // console.log(cs);
+        await $.get(url+'/anticov-api/today-cases-by-provinces').done(r => {
             fs.map(f => {
-                // console.log(f);
-                r.map(i => {
+                r.data.map(i => {
                     f.properties.pro_name == i.province ? f.properties.count = i.new_case : null
                 })
                 features.push(f);
@@ -159,20 +159,20 @@ info.update = function (props) {
 info.addTo(map);
 
 async function stat() {
-    await $.get('https://covid19.ddc.moph.go.th/api/Cases/today-cases-all').done(res => {
+    await $.get(url+'/anticov-api/today-cases-all').done(res => {
         // console.log(res)
-        $('#paccum').text(res[0].total_case);
-        $('#pnew').text(res[0].new_case);
-        $('#death').text(res[0].total_death);
-        $('#update').text(res[0].update_date)
+        $('#paccum').text(res.data[0].total_case);
+        $('#pnew').text(res.data[0].new_case);
+        $('#death').text(res.data[0].total_death);
+        $('#update').text(res.data[0].update_date)
     })
 }
 
 async function getInfect() {
     let arr = [];
-    await $.get('https://covid19.ddc.moph.go.th/api/Cases/timeline-cases-all').done(async (res) => {
+    await $.get(url+'/anticov-api/timeline-cases-all').done(async (res) => {
         // console.log(res.Data)
-        let data = await res;
+        let data = await res.data;
         let date = await data.map(obj => { return obj.txn_date; });
         let NewConfirmed = await data.map(obj => { return obj.new_case; });
         // let NewRecovered = await data.map(obj => { return obj.NewRecovered; });
@@ -187,11 +187,11 @@ async function getInfect() {
         $("#update").text(arr.pop());
     })
 
-    await $.get('https://covid19.ddc.moph.go.th/api/Cases/round-3-line-lists').done(async (res) => {
-        let data = await res.data;
+    await $.get(url+'/anticov-api/round-3-line-lists').done(async (res) => {
+        let data = await res.data.data;
         let week = data.map(obj => { return moment(obj.txn_date).isoWeek() })
         let age = data.map(obj => {
-            console.log(obj);
+            // console.log(obj);
             if (obj.age_number < 10) {
                 return 10;
             } else if (obj.age_number < 20) {
