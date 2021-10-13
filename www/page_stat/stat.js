@@ -38,7 +38,7 @@ async function loadInfectedMap() {
         let js = JSON.parse(res)
         let fs = await js.features;
         let features = [];
-        await $.get(url+'/anticov-api/today-cases-by-provinces').done(r => {
+        await $.get(url + '/anticov-api/today-cases-by-provinces').done(r => {
             fs.map(f => {
                 r.data.map(i => {
                     f.properties.pro_name == i.province ? f.properties.count = i.new_case : null
@@ -73,7 +73,7 @@ async function loadInfectedMap() {
             cat.push(e.name)
         })
 
-        getChart(dat, cat, '#chartByProv', true, 'Number of case', 'Province', 800);
+        getChart(dat, cat, '#chartByProv', true, 'Number of cases', 'Province', 800);
 
         geojson = L.geoJson(json, {
             style: style,
@@ -113,7 +113,7 @@ var legend = L.control({
 legend.onAdd = function (infectedMap) {
     var div = L.DomUtil.create('div', 'info legend'),
         grades = [0, 100, 500, 1000, 2000, 5000, 10000, 20000],
-        labels = ['Number of case : case'],
+        labels = ['Number of cases : cases'],
         from, to;
 
     for (var i = 0; i < grades.length; i++) {
@@ -150,7 +150,7 @@ info.onAdd = function (map) {
 };
 
 info.update = function (props) {
-    this._div.innerHTML = '<h4>Number of case </h4>' + (props ?
+    this._div.innerHTML = '<h4>Number of cases </h4>' + (props ?
         '<b>' + props.pro_name + '</b><br />' + props.count + ' '
         : '');
 
@@ -159,7 +159,7 @@ info.update = function (props) {
 info.addTo(map);
 
 async function stat() {
-    await $.get(url+'/anticov-api/today-cases-all').done(res => {
+    await $.get(url + '/anticov-api/today-cases-all').done(res => {
         // console.log(res)
         $('#paccum').text(res.data[0].total_case);
         $('#pnew').text(res.data[0].new_case);
@@ -170,7 +170,7 @@ async function stat() {
 
 async function getInfect() {
     let arr = [];
-    await $.get(url+'/anticov-api/timeline-cases-all').done(async (res) => {
+    await $.get(url + '/anticov-api/timeline-cases-all').done(async (res) => {
         // console.log(res.Data)
         let data = await res.data;
         let date = await data.map(obj => { return obj.txn_date; });
@@ -187,7 +187,7 @@ async function getInfect() {
         $("#update").text(arr.pop());
     })
 
-    await $.get(url+'/anticov-api/round-3-line-lists').done(async (res) => {
+    await $.get(url + '/anticov-api/round-3-line-lists').done(async (res) => {
         let data = await res.data.data;
         let week = data.map(obj => { return moment(obj.txn_date).isoWeek() })
         let age = data.map(obj => {
@@ -291,7 +291,7 @@ function getToday(a, b, date) {
         },
         yaxis: {
             title: {
-                text: 'Number of case'
+                text: 'Number of cases'
             }
         },
     };
